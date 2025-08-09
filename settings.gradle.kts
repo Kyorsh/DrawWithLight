@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SurfaceView"
+rootProject.name = "Paint"
 include(":app")
  
