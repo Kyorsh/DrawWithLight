@@ -10,9 +10,10 @@
         android:id="@+id/flashToggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Flash"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="#AAFFFFFF" />
+        android:background="#AAFFFFFF"
+        android:text="Flash"
+        android:visibility="invisible" />
 
 </RelativeLayout>

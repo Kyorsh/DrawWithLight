@@ -61,17 +61,17 @@ public class MainActivity extends AppCompatActivity {
 
 class MySurfaceView extends SurfaceView implements Runnable{
     private int[][] pixelMatrix = {
-            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,1,1,1,0,0,0,0,0,0},
+            {0,0,0,0,0,1,1,1,1,1,0,0,0,0,0},
+            {0,0,0,0,1,1,1,1,1,1,1,0,0,0,0},
+            {0,0,0,1,1,1,1,1,1,1,1,1,0,0,0},
+            {0,0,1,1,1,1,1,1,1,1,1,1,1,0,0},
+            {0,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
+            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0}
 
     };
     private int currentColumn = 0;
@@ -98,7 +98,6 @@ class MySurfaceView extends SurfaceView implements Runnable{
 
     @Override
     public void run() {
-
         Canvas canvas;
         while (isItOk){
             if (!holder.getSurface().isValid()) {
@@ -113,11 +112,12 @@ class MySurfaceView extends SurfaceView implements Runnable{
                     int pixelWidth = screenWidth / 25; // narrow light column
                     int xStart = (screenWidth - pixelWidth) / 2;
 
+
                     for (int row = 0; row < numRows; row++) {
                         if (pixelMatrix[row][currentColumn] == 1) {
                             paint.setColor(Color.WHITE);
                         } else {
-                            paint.setColor(Color.rgb(000,000,000));
+                            paint.setColor(Color.rgb(000, 000, 000));
                         }
 
                         canvas.drawRect(
@@ -128,15 +128,26 @@ class MySurfaceView extends SurfaceView implements Runnable{
                                 paint
                         );
                     }
-
+                    if (currentColumn == numCols - 1){
+                        try {
+                            canvas.drawColor(BLACK); // make sure it's fully black
+                            holder.unlockCanvasAndPost(canvas);
+                            Thread.sleep(333);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        holder.unlockCanvasAndPost(canvas);
+                    }
                     // Go to the next column
                     currentColumn = (currentColumn + 1) % numCols;
+
                 }
             }
             finally{
-                    if (canvas != null) {
-                        holder.unlockCanvasAndPost(canvas);
-                    }
+//                    if (canvas != null) {
+//                        holder.unlockCanvasAndPost(canvas);
+//                    }
             }
             try {
                 Thread.sleep(33);
